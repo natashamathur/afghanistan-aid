@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+setwd("~/Documents/Winter 2018/Statistics 2")
+library(tidyverse)
+library(tidyr)
+library(haven)
+info <- read.csv("~/Documents/Winter 2018/Statistics 2/policymemodata.csv")
+
+
+```
+```{r}
+
+all_aidONdirect <- lm(direct_attack ~ CERP_all, data = info)
+all_aidONindirect <- lm(indirect_attack ~ CERP_all, data = info)
+
+summary(all_aidONdirect)
+summary(all_aidONindirect)
+```
+```{r}
+
+g_all_aidONdirect <- lm(direct_attack ~ CERP_all + govt_control, data = info)
+g_all_aidONindirect <- lm(indirect_attack ~ CERP_all + govt_control, data = info)
+
+summary(g_all_aidONdirect)
+summary(g_all_aidONindirect)
+
+```
+```{r}
+
+small_aidONdirect <- lm(direct_attack ~ CERP_small + govt_control, data = info)
+small_aidONindireft <- lm(indirect_attack ~ CERP_small + govt_control, data = info)
+large_aidONdirect <- lm(direct_attack ~ CERP_large + govt_control, data = info)
+large_aidONindirect <- lm(indirect_attack ~ CERP_large + govt_control, data = info)
+
+summary(small_aidONdirect)
+summary(small_aidONindireft)
+summary(large_aidONdirect)
+summary(large_aidONindirect)
+
+```
+
+
+
