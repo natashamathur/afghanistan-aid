@@ -10,6 +10,7 @@ setwd("~/Documents/Winter 2018/Statistics 2")
 library(tidyverse)
 library(tidyr)
 library(haven)
+library(ggplot2)
 info <- read.csv("~/Documents/Winter 2018/Statistics 2/policymemodata.csv")
 
 
@@ -19,6 +20,19 @@ info <- read.csv("~/Documents/Winter 2018/Statistics 2/policymemodata.csv")
 all_aidONdirect <- lm(direct_attack ~ CERP_all, data = info)
 all_aidONindirect <- lm(indirect_attack ~ CERP_all, data = info)
 
+ad_plot <- ggplot(info, aes(y=direct_attack, x=CERP_all))+
+  geom_point()+
+  geom_abline(color = "blue")
+  labs(y="Number of Direct Attacks", x="All Aid Allocation")
+ad_plot
+
+ai_plot <- ggplot(info, aes(y=indirect_attack, x=CERP_all))+
+  geom_point()+
+  geom_abline(color = "red")
+  labs(y="Number of Indirect Attacks", x="All Aid Allocation")
+ai_plot
+
+
 summary(all_aidONdirect)
 summary(all_aidONindirect)
 ```
@@ -26,23 +40,66 @@ summary(all_aidONindirect)
 
 g_all_aidONdirect <- lm(direct_attack ~ CERP_all + govt_control, data = info)
 g_all_aidONindirect <- lm(indirect_attack ~ CERP_all + govt_control, data = info)
-
 summary(g_all_aidONdirect)
 summary(g_all_aidONindirect)
+
+sgad <- summary(g_all_aidONdirect)$coef
+
+gad_plot <- ggplot(info, aes(y=direct_attack, x=CERP_all, color = factor(govt_control)))+
+  geom_point(size = 3, color = "black") + geom_point(size = 2)+
+  geom_abline(intercept = sgad[1], slope = sgad[2], size = 0.5, color = 2) + 
+  geom_abline(intercept = sgad[1] + sgad[3], slope = sgad[2] + sgad[4], size = 0.5, color = 3) + 
+
+  labs(y="Number of Direct Attacks", x="All Aid Allocation")+
+  labs(color = "Under Government Control")
+gad_plot
+
+sgai <- summary(g_all_aidONindirect)$coef
+
+gai_plot <- ggplot(info, aes(y=indirect_attack, x=CERP_all))+
+  geom_point(size = 2, color = "black") + geom_point(size = 2)+
+  geom_abline(intercept = sgad[1], slope = sgad[2], size = 0.5, color = 2) + 
+  geom_abline(intercept = sgad[1] + sgad[3], slope = sgad[2] + sgad[4], size = 0.5, color = 3) + 
+
+  labs(y="Number of Indirect Attacks", x="All Aid Allocation")+
+  labs(color = "Under Government Control")
+gai_plot
+
 
 ```
 ```{r}
 
-small_aidONdirect <- lm(direct_attack ~ CERP_small + govt_control, data = info)
-small_aidONindireft <- lm(indirect_attack ~ CERP_small + govt_control, data = info)
-large_aidONdirect <- lm(direct_attack ~ CERP_large + govt_control, data = info)
-large_aidONindirect <- lm(indirect_attack ~ CERP_large + govt_control, data = info)
+small_aidONdirect <- lm(direct_attack ~ CERP_small + govt_control + CERP_small*govt_control, data = info)
+small_aidONindireft <- lm(indirect_attack ~ CERP_small + govt_control + CERP_small*govt_control, data = info)
+large_aidONdirect <- lm(direct_attack ~ CERP_large + govt_control + CERP_large*govt_control, data = info)
+large_aidONindirect <- lm(indirect_attack ~ CERP_large + govt_control + CERP_large*govt_control, data = info)
 
 summary(small_aidONdirect)
 summary(small_aidONindireft)
 summary(large_aidONdirect)
 summary(large_aidONindirect)
 
+```
+```{r}
+# selected results
+g_all_aidONdirect <- lm(direct_attack ~ CERP_all + govt_control, data = info)
+small_aidONindirect <- lm(indirect_attack ~ CERP_small + govt_control + CERP_small*govt_control, data = info)
+large_aidONindirect <- lm(indirect_attack ~ CERP_large + govt_control + CERP_large*govt_control, data = info)
+
+summary(g_all_aidONindirect)
+summary(small_aidONindirect)
+summary(large_aidONindirect)
+
+sgad <- summary(g_all_aidONdirect)$coef
+
+gad_plot <- ggplot(info, aes(y=direct_attack, x=CERP_all, color = factor(govt_control)))+
+  geom_point(size = 3, color = "black") + geom_point(size = 2)+
+  geom_abline(intercept = sgad[1], slope = sgad[2], size = 0.5, color = 2) + 
+  geom_abline(intercept = sgad[1] + sgad[3], slope = sgad[2] + sgad[4], size = 0.5, color = 3) + 
+
+  labs(y="Number of Direct Attacks", x="All Aid Allocation")+
+  labs(color = "Under Government Control")
+gad_plot
 ```
 
 
