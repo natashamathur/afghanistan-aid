@@ -1,6 +1,3 @@
-# afghanistan-aid
-Assessing the impact of U.S. military aid on regional violence in Afghanistan
-
 # Executive Summary
 Each year the United States distributes $5.9 billion in foreign aid. This money goes to a variety of countries on 
 every continent and can be used for anything from education to medical development to infrastructure spending. 
